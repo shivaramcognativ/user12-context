@@ -1,8 +1,8 @@
 name: Lint PR Title
 
-on:
-  pull_request:
-    types: [opened, reopened]
+on: push
+  #  pull_request:
+  #    types: [opened, reopened]
 
 jobs:
   lint_pr_title:
