@@ -1,22 +1,52 @@
-name: Lint PR Title
+name: Check PR Title
 
-on: push
-  #  pull_request:
-  #    types: [opened, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  lint_pr_title:
+  check_title:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check PR Title
+        id: check_title
+        env:
+          title: ${{ github.event.pull_request.title }}
         run: |
-          title="${{ github.event.pull_request.title }}"
-          echo $title
           if [[ $title =~ ^(chore|fix|feat) ]]; then
             echo "PR title starts with 'chore', 'fix', or 'feat'"
-            exit 0
+            echo "::set-output name=result::success"
           else
             echo "PR title did not start with 'chore', 'fix', or 'feat'"
-            exit 1
+            echo "::set-output name=result::failure"
           fi
-          ########
+        shell: bash -e {0}
+
+      - name: Set Output
+        id: set_output
+        run: |
+          echo ${{ steps.check_title.outputs.result }}
+        shell: bash
+
+# name: Lint PR Title
+
+# on: push
+#    pull_request:
+#      types: [opened, reopened]
+
+#   jobs:
+#    lint_pr_title:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check PR Title
+#         run: |
+#           title="${{ github.event.pull_request.title }}"
+#           echo $title
+#           if [[ $title =~ ^(chore|fix|feat) ]]; then
+#             echo "PR title starts with 'chore', 'fix', or 'feat'"
+#             exit 0
+#           else
+#             echo "PR title did not start with 'chore', 'fix', or 'feat'"
+#             exit 1
+#           fi
