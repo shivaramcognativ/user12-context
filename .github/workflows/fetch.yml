@@ -1,0 +1,20 @@
+name: Print Env Variable
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Secret
+        env:
+          MY_VAL: ${{ secrets.FLAG }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
