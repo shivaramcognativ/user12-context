@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint_pr_title:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check PR Title
         run: |
